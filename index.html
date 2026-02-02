@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>For Unisha 💖</title>
+<style>
+  :root{
+    --pink:#ff4d8d;
+    --soft:#ffb3c8;
+    --glass: rgba(0,0,0,0.58);
+    --glass2: rgba(255,255,255,0.18);
+    --border: rgba(255,255,255,0.22);
+  }
+  *{box-sizing:border-box; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;}
+  body{margin:0; background:#000; color:#fff; overflow-x:hidden;}
+
+  /* Pages */
+  .page{
+    min-height:100vh;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background-size:cover;
+    background-position:center;
+    position:relative;
+    padding:24px;
+  }
+  .shade{
+    position:absolute; inset:0;
+    background: radial-gradient(900px 600px at 30% 20%, rgba(255,77,141,0.18), transparent 60%),
+                radial-gradient(900px 600px at 80% 30%, rgba(255,179,200,0.12), transparent 55%),
+                rgba(0,0,0,0.45);
+  }
+  .card{
+    position:relative;
+    width:min(560px, 100%);
+    background:var(--glass);
+    border:1px solid var(--border);
+    border-radius:22px;
+    padding:22px 18px;
+    backdrop-filter: blur(10px);
+    box-shadow:0 22px 70px rgba(0,0,0,0.55);
+    text-align:center;
+  }
+  h1{margin:6px 0 10px; letter-spacing:-0.4px;}
+  p{margin:0 0 12px; color:rgba(255,255,255,0.85); line-height:1.5;}
+
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; color:rgba(255,255,255,0.8);
+    border:1px solid var(--border);
+    padding:8px 12px; border-radius:999px;
+    margin-bottom:10px;
+    background: rgba(255,255,255,0.06);
+  }
+
+  .options{display:grid; gap:10px; margin:14px 0 10px;}
+  .opt{
+    border:1px solid var(--border);
+    background:var(--glass2);
+    color:#fff;
+    padding:14px 14px;
+    border-radius:16px;
+    cursor:pointer;
+    transition: transform .06s ease, background .2s ease;
+    text-align:left;
+  }
+  .opt:hover{background: rgba(255,255,255,0.28);}
+  .opt:active{transform:scale(0.99);}
+
+  .row{display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-top:12px;}
+  .btn{
+    border:none; cursor:pointer;
+    padding:12px 16px;
+    border-radius:16px;
+    font-weight:700;
+  }
+  .btn.primary{background: linear-gradient(135deg, var(--pink), #ff7aa8); color:#fff;}
+  .btn.ghost{background: rgba(255,255,255,0.10); color:#fff; border:1px solid var(--border);}
+
+  .msg{
+    min-height:26px;
+    margin-top:10px;
+    color:var(--soft);
+    font-weight:650;
+  }
+
+  /* final buttons layout */
+  .finalBtns{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-top:12px;
+    min-height:72px;
+  }
+  #noBtn{
+    position:relative;
+  }
+
+  /* Confetti canvas */
+  #confetti{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:9999;
+  }
+
+  /* Tiny footer */
+  .tiny{
+    margin-top:10px;
+    font-size:12px;
+    color:rgba(255,255,255,0.6);
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<!-- Background music (you provide srotoshi.mp3 in the same folder) -->
+<audio id="bgm" loop preload="auto">
+  <source src="srotoshi.mp3" type="audio/mpeg">
+</audio>
+
+<!-- INTRO -->
+<section class="page" id="intro" style="background-image:url('q1.jpg')">
+  <div class="shade"></div>
+  <div class="card">
+    <div class="badge">💌 Memory Quiz — unlock the surprise</div>
+    <h1>Hey Unisha Shrestha 💖</h1>
+    <p>I made this for you.</p>
+    <p>Answer 4 questions… then I’ll ask you something important.</p>
+
+    <div class="row">
+      <button class="btn primary" id="musicStart">Tap to enable music 🎵</button>
+      <button class="btn ghost" onclick="go('q1')">Start anyway</button>
+    </div>
+
+    <div class="tiny">P.S. music needs one tap to play on phones 😌</div>
+  </div>
+</section>
+
+<!-- Q1 -->
+<section class="page" id="q1" style="background-image:url('q1.jpg')">
+  <div class="shade"></div>
+  <div class="card">
+    <div class="badge">Question 1 of 4</div>
+    <h1>Where did we meet first?</h1>
+
+    <div class="options">
+      <div class="opt" onclick="wrong('m1')">A: At uni lobby</div>
+      <div class="opt" onclick="right('q2')">B: At CN Class</div>
+      <div class="opt" onclick="wrong('m1')">C: In my bedroom</div>
+      <div class="opt" onclick="wrong('m1')">D: Stripclub</div>
+    </div>
+
+    <div class="msg" id="m1"></div>
+  </div>
+</section>
+
+<!-- Q2 -->
+<section class="page" id="q2" style="background-image:url('q2.jpg')">
+  <div class="shade"></div>
+  <div class="card">
+    <div class="badge">Question 2 of 4</div>
+    <h1>What did I get on our first day out?</h1>
+
+    <div class="options">
+      <div class="opt" onclick="right('q3')">A: Ful</div>
+      <div class="opt" onclick="wrong('m2')">B: A teddy bear</div>
+      <div class="opt" onclick="wrong('m2')">C: Food</div>
+      <div class="opt" onclick="right('q3')">D: ME</div>
+    </div>
+
+    <div class="msg" id="m2"></div>
+  </div>
+</section>
+
+<!-- Q3 -->
+<section class="page" id="q3" style="background-image:url('q3.jpg')">
+  <div class="shade"></div>
+  <div class="card">
+    <div class="badge">Question 3 of 4</div>
+    <h1>When did we talk for the first time?</h1>
+
+    <div class="options">
+      <div class="opt" onclick="wrong('m3')">A: In class</div>
+      <div class="opt" onclick="wrong('m3')">B: Walking our way downtown</div>
+      <div class="opt" onclick="wrong('m3')">C: In a toilet full of shit</div>
+      <div class="opt" onclick="right('q4')">D: At a train station</div>
+    </div>
+
+    <div class="msg" id="m3"></div>
+  </div>
+</section>
+
+<!-- Q4 -->
+<section class="page" id="q4" style="background-image:url('q4.png')">
+  <div class="shade"></div>
+  <div class="card">
+    <div class="badge">Question 4 of 4</div>
+    <h1>When did we properly hang out?</h1>
+
+    <div class="options">
+      <div class="opt" onclick="wrong('m4')">A: At the club</div>
+      <div class="opt" onclick="right('final')">B: A river side</div>
+      <div class="opt" onclick="wrong('m4')">C: In the uber</div>
+      <div class="opt" onclick="wrong('m4')">D: In my car HAAH</div>
+    </div>
+
+    <div class="msg" id="m4"></div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section class="page" id="final" style="background-image:url('q4.png')">
+  <div class="shade"></div>
+  <div class="card">
+    <div class="badge">Final Step 💘</div>
+    <h1>Unisha… will you be my Valentine?</h1>
+    <p>I choose you. Today and every day.</p>
+
+    <div class="finalBtns" id="finalBtns">
+      <button class="btn primary" id="yesBtn">YES 💖</button>
+      <button class="btn ghost" id="noBtn">No 🙄</button>
+    </div>
+
+    <div class="msg" id="end"></div>
+
+    <div class="row" style="margin-top:14px;">
+      <button class="btn ghost" onclick="toggleMusic()">Music: Toggle 🎵</button>
+      <button class="btn ghost" onclick="go('intro')">Restart 🔁</button>
+    </div>
+
+    <div class="tiny">If the “No” button acts weird… it’s not me, it’s fate 😌</div>
+  </div>
+</section>
+
+<script>
+  // ---------- Page routing ----------
+  const pages = ["intro","q1","q2","q3","q4","final"];
+  function show(id){
+    pages.forEach(p => document.getElementById(p).style.display = "none");
+    document.getElementById(id).style.display = "flex";
+  }
+  function go(id){ show(id); }
+
+  // ---------- Funny wrong messages ----------
+  const funny = [
+    "Nahhh 😭 try again",
+    "Be serious pls 💀",
+    "Wrong universe 😂",
+    "Close… but no 😌",
+    "Absolutely not 😭",
+    "Unisha… noooo pick again 💖",
+    "Stop playinggg 😭",
+    "That’s crazy 💀 try another"
+  ];
+  function wrong(msgId){
+    const el = document.getElementById(msgId);
+    el.textContent = funny[Math.floor(Math.random()*funny.length)];
+  }
+  function right(nextId){
+    // clear visible messages
+    document.querySelectorAll(".msg").forEach(m => m.textContent = "");
+    setTimeout(() => go(nextId), 420);
+  }
+
+  // ---------- Music ----------
+  const bgm = document.getElementById("bgm");
+  let musicOn = false;
+
+  async function startMusic(){
+    try{
+      bgm.volume = 0.6;
+      await bgm.play();
+      musicOn = true;
+    }catch(e){
+      // If autoplay blocked or file missing
+      musicOn = false;
+      alert("Music didn't start. If you want music, add 'srotoshi.mp3' beside index.html, then tap again.");
+    }
+  }
+
+  function toggleMusic(){
+    if(!musicOn){
+      startMusic();
+    }else{
+      bgm.pause();
+      musicOn = false;
+    }
+  }
+
+  document.getElementById("musicStart").addEventListener("click", async () => {
+    await startMusic();
+    go("q1");
+  });
+
+  // ---------- Runaway NO button ----------
+  const noBtn = document.getElementById("noBtn");
+  const wrap = document.getElementById("finalBtns");
+
+  function moveNo(){
+    // Make it jump around inside the final button area
+    const pad = 10;
+    const w = wrap.clientWidth;
+    const h = wrap.clientHeight || 90;
+
+    // random offsets
+    const x = Math.max(pad, Math.random()*(w - 120 - pad));
+    const y = Math.max(pad, Math.random()*(h - 44 - pad));
+
+    noBtn.style.position = "absolute";
+    noBtn.style.left = x + "px";
+    noBtn.style.top  = y + "px";
+  }
+
+  // on hover/touchstart it runs away
+  noBtn.addEventListener("mouseenter", moveNo);
+  noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNo(); }, {passive:false});
+  noBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    document.getElementById("end").textContent = "Nice try 😌";
+    moveNo();
+  });
+
+  // ---------- Confetti ----------
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
+  let confetti = [];
+  let confettiOn = false;
+
+  function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener("resize", resize);
+  resize();
+
+  function burstConfetti(){
+    confettiOn = true;
+    confetti = [];
+    const count = 180;
+
+    for(let i=0;i<count;i++){
+      confetti.push({
+        x: Math.random()*canvas.width,
+        y: -20 - Math.random()*canvas.height*0.2,
+        r: 3 + Math.random()*4,
+        vx: -2 + Math.random()*4,
+        vy: 2 + Math.random()*5,
+        rot: Math.random()*Math.PI,
+        vr: -0.2 + Math.random()*0.4,
+        a: 1
+      });
+    }
+  }
+
+  function tick(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    if(confettiOn){
+      for(const p of confetti){
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        p.vy += 0.02; // gravity
+        p.a -= 0.0022;
+
+        ctx.save();
+        ctx.globalAlpha = Math.max(0,p.a);
+        ctx.translate(p.x,p.y);
+        ctx.rotate(p.rot);
+
+        // simple confetti rectangles — no fixed colors requested, so random bright
+        const hue = Math.floor(Math.random()*360);
+        ctx.fillStyle = `hsl(${hue} 90% 60%)`;
+        ctx.fillRect(-p.r, -p.r, p.r*2.4, p.r*1.2);
+
+        ctx.restore();
+      }
+      confetti = confetti.filter(p => p.a > 0 && p.y < canvas.height+40);
+      if(confetti.length === 0) confettiOn = false;
+    }
+    requestAnimationFrame(tick);
+  }
+  tick();
+
+  // YES button
+  document.getElementById("yesBtn").addEventListener("click", () => {
+    document.getElementById("end").textContent = "YAYYYYY 💞💞💞 Screenshot this 😭💖";
+    burstConfetti();
+  });
+
+  // Start on intro
+  show("intro");
+</script>
+</body>
+</html>
